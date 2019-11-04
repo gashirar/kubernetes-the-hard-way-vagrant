@@ -1,6 +1,8 @@
 #!/bin/bash
 
-cat > kube-controller-manager-csr.json <<EOF
+OUTPUT_DIR=${K8STHW_WORKSPACE:-.}
+
+cat > ${OUTPUT_DIR}/kube-controller-manager-csr.json <<EOF
 {
   "CN": "system:kube-controller-manager",
   "key": {
@@ -19,9 +21,10 @@ cat > kube-controller-manager-csr.json <<EOF
 }
 EOF
 
-cfssl gencert \
-  -ca=ca.pem \
-  -ca-key=ca-key.pem \
-  -config=ca-config.json \
-  -profile=kubernetes \
-  kube-controller-manager-csr.json | cfssljson -bare kube-controller-manager
+(cd ${OUTPUT_DIR} &&
+ cfssl gencert \
+   -ca=ca.pem \
+   -ca-key=ca-key.pem \
+   -config=ca-config.json \
+   -profile=kubernetes \
+   kube-controller-manager-csr.json | cfssljson -bare kube-controller-manager)

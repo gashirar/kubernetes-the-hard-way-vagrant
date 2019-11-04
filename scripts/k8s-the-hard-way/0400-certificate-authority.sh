@@ -1,6 +1,8 @@
 #!/bin/bash
 
-cat > ca-config.json <<EOF
+OUTPUT_DIR=${K8STHW_WORKSPACE:-.}
+
+cat > ${OUTPUT_DIR}/ca-config.json <<EOF
 {
   "signing": {
     "default": {
@@ -16,7 +18,7 @@ cat > ca-config.json <<EOF
 }
 EOF
 
-cat > ca-csr.json <<EOF
+cat > ${OUTPUT_DIR}/ca-csr.json <<EOF
 {
   "CN": "Kubernetes",
   "key": {
@@ -35,4 +37,4 @@ cat > ca-csr.json <<EOF
 }
 EOF
 
-cfssl gencert -initca ca-csr.json | cfssljson -bare ca
+(cd ${OUTPUT_DIR} && cfssl gencert -initca ${OUTPUT_DIR}/ca-csr.json | cfssljson -bare ca)

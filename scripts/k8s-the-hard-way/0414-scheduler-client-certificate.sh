@@ -1,6 +1,8 @@
 #!/bin/bash
 
-cat > kube-scheduler-csr.json <<EOF
+OUTPUT_DIR=${K8STHW_WORKSPACE:-.}
+
+cat > ${OUTPUT_DIR}/kube-scheduler-csr.json <<EOF
 {
   "CN": "system:kube-scheduler",
   "key": {
@@ -19,9 +21,10 @@ cat > kube-scheduler-csr.json <<EOF
 }
 EOF
 
-cfssl gencert \
-  -ca=ca.pem \
-  -ca-key=ca-key.pem \
-  -config=ca-config.json \
-  -profile=kubernetes \
-  kube-scheduler-csr.json | cfssljson -bare kube-scheduler
+(cd ${OUTPUT_DIR} && \
+ cfssl gencert \
+   -ca=ca.pem \
+   -ca-key=ca-key.pem \
+   -config=ca-config.json \
+   -profile=kubernetes \
+   kube-scheduler-csr.json | cfssljson -bare kube-scheduler)

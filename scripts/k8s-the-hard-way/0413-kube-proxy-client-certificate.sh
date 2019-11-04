@@ -1,6 +1,8 @@
 #!/bin/bash
 
-cat > kube-proxy-csr.json <<EOF
+OUTPUT_DIR=${K8STHW_WORKSPACE:-.}
+
+cat > ${OUTPUT_DIR}/kube-proxy-csr.json <<EOF
 {
   "CN": "system:kube-proxy",
   "key": {
@@ -19,9 +21,10 @@ cat > kube-proxy-csr.json <<EOF
 }
 EOF
 
-cfssl gencert \
-  -ca=ca.pem \
-  -ca-key=ca-key.pem \
-  -config=ca-config.json \
-  -profile=kubernetes \
-  kube-proxy-csr.json | cfssljson -bare kube-proxy
+(cd ${OUTPUT_DIR} && \
+ cfssl gencert \
+   -ca=ca.pem \
+   -ca-key=ca-key.pem \
+   -config=ca-config.json \
+   -profile=kubernetes \
+   kube-proxy-csr.json | cfssljson -bare kube-proxy)

@@ -2,7 +2,9 @@
 
 ENCRYPTION_KEY=$(head -c 32 /dev/urandom | base64)
 
-cat >encryption-config.yaml <<EOF
+OUTPUT_DIR=${K8STHW_WORKSPACE:-.}
+
+cat > ${OUTPUT_DIR}/encryption-config.yaml <<EOF
 kind: EncryptionConfig
 apiVersion: v1
 resources:

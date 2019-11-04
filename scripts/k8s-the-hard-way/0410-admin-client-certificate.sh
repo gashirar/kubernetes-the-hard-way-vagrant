@@ -1,6 +1,8 @@
 #!/bin/bash
 
-cat > admin-csr.json <<EOF
+OUTPUT_DIR=${K8STHW_WORKSPACE:-.}
+
+cat > ${OUTPUT_DIR}/admin-csr.json <<EOF
 {
   "CN": "admin",
   "key": {
@@ -19,9 +21,10 @@ cat > admin-csr.json <<EOF
 }
 EOF
 
-cfssl gencert \
-  -ca=ca.pem \
-  -ca-key=ca-key.pem \
-  -config=ca-config.json \
-  -profile=kubernetes \
-  admin-csr.json | cfssljson -bare admin
+(cd ${OUTPUT_DIR} && \
+ cfssl gencert \
+   -ca=ca.pem \
+   -ca-key=ca-key.pem \
+   -config=ca-config.json \
+   -profile=kubernetes \
+   admin-csr.json | cfssljson -bare admin)
