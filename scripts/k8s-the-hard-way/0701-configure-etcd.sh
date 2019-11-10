@@ -13,6 +13,7 @@ Description=etcd
 Documentation=https://github.com/coreos
 
 [Service]
+Type=notify
 ExecStart=/usr/local/bin/etcd \\
   --name ${ETCD_NAME} \\
   --cert-file=/etc/etcd/kubernetes.pem \\
